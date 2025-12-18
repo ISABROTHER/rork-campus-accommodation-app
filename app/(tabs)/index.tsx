@@ -15,7 +15,11 @@ export default function ExploreScreen() {
             <Text style={styles.greeting}>Good Morning</Text>
             <Text style={styles.title}>Find your campus home</Text>
           </View>
-          <TouchableOpacity style={styles.filterButton} onPress={() => router.push("/modal")}>
+          <TouchableOpacity 
+            style={styles.filterButton} 
+            onPress={() => router.push("/modal")}
+            activeOpacity={0.7}
+          >
             <Filter size={20} color={Colors.text} />
           </TouchableOpacity>
         </View>
