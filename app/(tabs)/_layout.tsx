@@ -1,7 +1,7 @@
+import React from "react";
 import { Tabs } from "expo-router";
 import { Compass, Search, Heart, User } from "lucide-react-native";
-import React from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 import { Colors } from "@/constants/colors";
 
@@ -9,40 +9,55 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        headerShown: false,
+
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.tabIconDefault,
-        headerShown: false,
-        tabBarStyle: styles.tabBar,
-        tabBarLabelStyle: styles.tabLabel,
+
         tabBarShowLabel: true,
+        tabBarLabelStyle: styles.tabLabel,
+
+        // “Banking-style” floating, rounded tab bar
+        tabBarStyle: styles.tabBar,
+
+        tabBarItemStyle: styles.tabItem,
+        tabBarIconStyle: styles.tabIcon,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Explore",
-          tabBarIcon: ({ color, size }) => <Compass size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Compass size={Math.max(22, size)} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
           title: "Search",
-          tabBarIcon: ({ color, size }) => <Search size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Search size={Math.max(22, size)} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="saved"
         options={{
           title: "Saved",
-          tabBarIcon: ({ color, size }) => <Heart size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Heart size={Math.max(22, size)} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ color, size }) => <User size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <User size={Math.max(22, size)} color={color} />
+          ),
         }}
       />
     </Tabs>
@@ -52,17 +67,51 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: Colors.surface,
-    borderTopColor: Colors.border,
-    borderTopWidth: 1,
-    height: 84, // Taller tab bar for modern feel
-    paddingTop: 8,
-    paddingBottom: 28, // Account for bottom safe area
-    elevation: 0,
-    shadowOpacity: 0,
+    borderTopWidth: 0,
+
+    // Floating pill
+    position: "absolute",
+    left: 14,
+    right: 14,
+    bottom: 12,
+    height: 72,
+    paddingTop: 10,
+    paddingBottom: 10,
+
+    borderRadius: 22,
+
+    // Subtle outline (premium feel)
+    borderWidth: 1,
+    borderColor: Colors.border,
+
+    // Shadow (iOS) + Elevation (Android)
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 18,
+        shadowOffset: { width: 0, height: 10 },
+      },
+      android: {
+        elevation: 10,
+      },
+      default: {},
+    }),
   },
+
+  tabItem: {
+    borderRadius: 16,
+    paddingVertical: 6,
+  },
+
+  tabIcon: {
+    marginTop: 2,
+  },
+
   tabLabel: {
-    fontSize: 12,
-    fontWeight: "500",
+    fontSize: 11,
+    fontWeight: "600",
+    letterSpacing: 0.2,
     marginTop: 4,
   },
 });
